@@ -1,0 +1,436 @@
+﻿<?xml version="1.0"?>
+<loop_detection
+  verbose_level = "normal"
+  >
+  <states>
+    <state name="static">
+      <map/>
+      <location  name="location"  />
+      <proximity
+        name="proximity"
+        origin = "0 0 0"
+      />
+    </state>
+    <state name="loop">
+      <location  name="location_loop"  />
+      <proximity
+        name="proximity0"
+        origin = "0 0 0.8"
+      />
+      <proximity
+        name="proximity1"
+        origin = "0 0 0.8"
+      />
+    </state>
+  </states>
+
+  <managers>
+    <rendering_manager
+      window_pos_x  = "640"
+      window_pos_y  = "20"
+      window_width  = "640"
+      window_height = "800"
+      window_title  = "Loop Detection"
+      console_font_size     = "10"
+      console_pos_x         = "0"
+      console_pos_y         = "0"
+      console_width         = "100"
+      console_height        = "60"
+      console_input_row     = "58"
+      >
+      <window
+        split       = "1 2"
+        row_ratio   = "100%"
+        col_ratio   = "100% 200"
+        frame_color = "black"
+        back_color  = "white"
+        font_size   = "24">
+        <import filename="conf/viewer.xml"/>
+        <import filename="conf/panel.xml" />
+      </window>
+
+      <console col="0" row="0" width="50" height="2">
+        <item type="data"  name="map"        />
+      </console>
+      <console col="0" row="25" width="50" height="30">
+        <item type="message" message_depth="30"/>
+      </console>
+
+      <event window="btn_show_map_place"      code="latch_on"  request="map_renderer        show place"     />
+      <event window="btn_show_map_place"      code="latch_off" request="map_renderer        hide place"     />
+      <event window="btn_show_map_proximity"  code="latch_on"  request="map_renderer        show proximity" />
+      <event window="btn_show_map_proximity"  code="latch_off" request="map_renderer        hide proximity" />
+      <event window="btn_show_map_pointcloud" code="latch_on"  request="map_renderer        show pointcloud"/>
+      <event window="btn_show_map_pointcloud" code="latch_off" request="map_renderer        hide pointcloud"/>
+      <event window="btn_show_map_loop"       code="latch_on"  request="map_renderer        show loop"      />
+      <event window="btn_show_map_loop"       code="latch_off" request="map_renderer        hide loop"      />
+      <event window="btn_show_map_octtree"    code="latch_on"  request="map_octtree_renderer show"/>
+      <event window="btn_show_map_octtree"    code="latch_off" request="map_octtree_renderer hide"/>
+
+      <view
+        viewer  ="viewer"
+        location="location_origin"
+        >
+        <renderer name="map_renderer"               location="location_origin"  />
+        <renderer name="map_octtree_renderer"       location="location_origin"  />
+      </view>
+    </rendering_manager>
+
+    <map_loader
+      alias     ="ml"
+      map       ="map"
+      pointcloud="map_pointcloud"
+      >
+      <place     filename="map/ku2022/ku2022_11_loc.csv" map_id ="1"/>
+      <proximity filename="map/ku2022/ku2022_11_prox.csv" map_id ="1"/>
+      <place     filename="map/ku2022/ku2022_12_loc.csv" map_id ="2"/>
+      <proximity filename="map/ku2022/ku2022_12_prox.csv" map_id ="2"/>
+      <place     filename="map/ku2022/ku2022_13_loc.csv" map_id ="3"/>
+      <proximity filename="map/ku2022/ku2022_13_prox.csv" map_id ="3"/>
+      <place     filename="map/ku2022/ku2022_14_loc.csv" map_id ="4"/>
+      <proximity filename="map/ku2022/ku2022_14_prox.csv" map_id ="4"/>
+      <place     filename="map/ku2022/ku2022_15_loc.csv" map_id ="5"/>
+      <proximity filename="map/ku2022/ku2022_15_prox.csv" map_id ="5"/>
+      <place     filename="map/ku2022/ku2022_16_loc.csv" map_id ="6"/>
+      <proximity filename="map/ku2022/ku2022_16_prox.csv" map_id ="6"/>
+      <loop      filename_save="map/ku2022/ku2022_1A_match.csv"/>
+    </map_loader>
+
+
+
+    <loop_detector
+      alias           = "ld01f"
+      name            = "loop_detector_01_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "0"
+      reverse         = "false"
+      map_pair0       = "0"
+      map_pair1       = "1"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld02r"
+      name            = "loop_detector_02_reverse"
+      map             = "map"
+      proximity_matcher="loop_matcher_reverse"
+      shift_cost      = "0.30"
+      min_gap         = "0"
+      reverse         = "true"
+      map_pair0       = "0"
+      map_pair1       = "2"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld12f"
+      name            = "loop_detector_12_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "0"
+      reverse         = "false"
+      map_pair0       = "1"
+      map_pair1       = "2"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld13r"
+      name            = "loop_detector_13_reverse"
+      map             = "map"
+      proximity_matcher="loop_matcher_reverse"
+      shift_cost      = "0.30"
+      min_gap         = "0"
+      reverse         = "true"
+      map_pair0       = "1"
+      map_pair1       = "3"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld23f"
+      name            = "loop_detector_23_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "0"
+      reverse         = "false"
+      map_pair0       = "2"
+      map_pair1       = "3"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld34f"
+      name            = "loop_detector_34_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "0"
+      reverse         = "false"
+      map_pair0       = "3"
+      map_pair1       = "4"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld05f"
+      name            = "loop_detector_05_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "0"
+      reverse         = "false"
+      map_pair0       = "0"
+      map_pair1       = "5"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "2"
+      />
+    <loop_detector
+      alias           = "ld15r"
+      name            = "loop_detector_15_reverse"
+      map             = "map"
+      proximity_matcher="loop_matcher_reverse"
+      shift_cost      = "0.30"
+      min_gap         = "0"
+      reverse         = "true"
+      map_pair0       = "1"
+      map_pair1       = "5"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld25f"
+      name            = "loop_detector_25_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "0"
+      reverse         = "false"
+      map_pair0       = "2"
+      map_pair1       = "5"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "2"
+      />
+    <loop_detector
+      alias           = "ld35r"
+      name            = "loop_detector_35_reverse"
+      map             = "map"
+      proximity_matcher="loop_matcher_reverse"
+      shift_cost      = "0.30"
+      min_gap         = "0"
+      reverse         = "true"
+      map_pair0       = "3"
+      map_pair1       = "5"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld45f"
+      name            = "loop_detector_45_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "0"
+      reverse         = "false"
+      map_pair0       = "4"
+      map_pair1       = "5"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "2"
+      />
+    
+    
+    
+
+    <loop_detector
+      alias           = "ld00f"
+      name            = "loop_detector_00_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "200"
+      reverse         = "false"
+      map_pair0       = "0"
+      map_pair1       = "0"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld11f"
+      name            = "loop_detector_11_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "200"
+      reverse         = "false"
+      map_pair0       = "1"
+      map_pair1       = "1"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld22f"
+      name            = "loop_detector_22_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "500"
+      reverse         = "false"
+      map_pair0       = "2"
+      map_pair1       = "2"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld33f"
+      name            = "loop_detector_33_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "300"
+      reverse         = "false"
+      map_pair0       = "3"
+      map_pair1       = "3"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld44f"
+      name            = "loop_detector_44_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "300"
+      reverse         = "false"
+      map_pair0       = "4"
+      map_pair1       = "4"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld55f"
+      name            = "loop_detector_55_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "300"
+      reverse         = "false"
+      map_pair0       = "5"
+      map_pair1       = "5"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+
+    <proximity_matcher
+      name              = "loop_matcher_forward"
+      location          = "location_loop"
+      proximity0        = "proximity0"
+      proximity1        = "proximity1"
+      num_iter          = "0"
+      sharpness         = "0.5"
+      />
+
+    <proximity_matcher
+      name              = "loop_matcher_reverse"
+      location          = "location_loop"
+      proximity0        = "proximity0"
+      proximity1        = "proximity1"
+      num_iter          = "0"
+      sharpness         = "1.0"
+      />
+
+
+    <map_renderer
+      pointcloud_renderer      = "map_pointcloud_renderer"
+      proximity_renderer       = "map_proximity_renderer"
+      place_point_size         = "5"
+      place_color              = "black"
+      place_color_selected     = "red"
+      movement_line_width      = "2"
+      movement_color           = "black"
+      proximity_color          = "gray"
+      proximity_color_selected = "red"
+      loop_color0              = "red*a=0"
+      loop_color1              = "red*a=1"
+      point_color              = "gray"
+      waypoint_color           = "magenta"
+      waypoint_point_size      = "10"
+      />
+    <pointcloud_renderer
+      name      = "map_pointcloud_renderer"
+      color0    ="blue*a=0.5"
+      point_size="1.0"
+      />
+    <proximity_renderer
+      name         ="map_proximity_renderer"
+      proximity    ="proximity"
+      coloring     ="duration"
+      point_color0 ="blue*a=0"
+      point_color1 ="blue*a=1"
+      line_color0  ="black*a=0.0"
+      line_color1  ="black*a=0.3"
+      point_size   ="5.0"
+      line_width   ="0.5"
+      max_duration ="10"
+      />
+    <request_manager/>
+  </managers>
+
+  <sequencer name="rendering" period="50" running="true">
+    <task request="rendering_manager draw_scene"/>
+    <task request="rendering_manager draw_text" />
+  </sequencer>
+  <sequencer name="ld" use_waitlimit="false">
+    <task request="ml load place"/>
+    <task request="ml load proximity"/>
+    <task request="loop_detector_00_forward detect ku2022"/>
+    <task request="loop_detector_11_forward detect ku2022"/>
+    <task request="loop_detector_22_forward detect ku2022"/>
+    <task request="loop_detector_33_forward detect ku2022"/>
+    <task request="loop_detector_44_forward detect ku2022"/>
+    <task request="loop_detector_55_forward detect ku2022"/>
+    <task request="loop_detector_01_forward detect ku2022"/>
+    <task request="loop_detector_02_reverse detect ku2022"/>
+    <task request="loop_detector_05_forward detect ku2022"/>
+    <task request="loop_detector_12_forward detect ku2022"/>
+    <task request="loop_detector_13_reverse detect ku2022"/>
+    <task request="loop_detector_15_reverse detect ku2022"/>
+    <task request="loop_detector_23_forward detect ku2022"/>
+    <task request="loop_detector_25_forward detect ku2022"/>
+    <task request="loop_detector_34_forward detect ku2022"/>
+    <task request="loop_detector_35_reverse detect ku2022"/>
+    <task request="loop_detector_45_forward detect ku2022"/>
+    <task request="ml save loop"/>
+  </sequencer>
+  <sequencer name="g2p" use_waitlimit="false">
+    <task request="ml load g2o"/>
+    <task request="ml save place"/>
+    <task request="ml save proximity"/>
+  </sequencer>
+  <sequencer name="p2ap" use_waitlimit="false">
+    <task request="ml load place"/>
+    <task request="ml load proximity"/>
+    <task request="ml save proximity"/>
+  </sequencer>
+
+</loop_detection>

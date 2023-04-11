@@ -1,0 +1,137 @@
+<ku2022>
+  <!-- Load file settings -->
+  <MapLoader
+    name = "MapLoad"
+    mapNum = "6"
+    delim = ","
+    loadFormat = "Loc Prox Match"
+    MatchFile              = "../data/ku2022_1A_match.csv" >
+    <Map ID = "1" LocFile  = "../data/ku2022_11_loc.csv"
+                  ProxFile = "../data/ku2022_11_prox.csv" />
+    <Map ID = "2" LocFile  = "../data/ku2022_12_loc.csv"
+                  ProxFile = "../data/ku2022_12_prox.csv" />
+    <Map ID = "3" LocFile  = "../data/ku2022_13_loc.csv"
+                  ProxFile = "../data/ku2022_13_prox.csv" />
+    <Map ID = "4" LocFile  = "../data/ku2022_14_loc.csv"
+                  ProxFile = "../data/ku2022_14_prox.csv" />
+    <Map ID = "5" LocFile  = "../data/ku2022_15_loc.csv"
+                  ProxFile = "../data/ku2022_15_prox.csv" />
+    <Map ID = "6" LocFile  = "../data/ku2022_16_loc.csv"
+                  ProxFile = "../data/ku2022_16_prox.csv" />
+  </MapLoader>
+
+  <!-- Save file settings -->
+  <MapSaver
+    name = "MapSave"
+    mapNum = "6"
+    saveFormat = "Loc AbsProx LocMatch AbsProxMatch"
+    LocMatchFile              = "../data/ku2022_SPROX_locmatch.csv"
+    AbsProxMatchFile          = "../data/ku2022_SPROX_absproxmatch.csv" >
+    <Map ID = "1" LocFile     = "../data/ku2022_11_SPROX_loc.csv"
+                  ProxFile    = "../data/ku2022_11_SPROX_prox.csv"
+                  AbsProxFile = "../data/ku2022_11_SPROX_absprox.csv" />
+    <Map ID = "2" LocFile     = "../data/ku2022_12_SPROX_loc.csv"
+                  ProxFile    = "../data/ku2022_12_SPROX_prox.csv"
+                  AbsProxFile = "../data/ku2022_12_SPROX_absprox.csv" />
+    <Map ID = "3" LocFile     = "../data/ku2022_13_SPROX_loc.csv"
+                  ProxFile    = "../data/ku2022_13_SPROX_prox.csv"
+                  AbsProxFile = "../data/ku2022_13_SPROX_absprox.csv" />
+    <Map ID = "4" LocFile     = "../data/ku2022_14_SPROX_loc.csv"
+                  ProxFile    = "../data/ku2022_14_SPROX_prox.csv"
+                  AbsProxFile = "../data/ku2022_14_SPROX_absprox.csv" />
+    <Map ID = "5" LocFile     = "../data/ku2022_15_SPROX_loc.csv"
+                  ProxFile    = "../data/ku2022_15_SPROX_prox.csv"
+                  AbsProxFile = "../data/ku2022_15_SPROX_absprox.csv" />
+    <Map ID = "6" LocFile     = "../data/ku2022_16_SPROX_loc.csv"
+                  ProxFile    = "../data/ku2022_16_SPROX_prox.csv"
+                  AbsProxFile = "../data/ku2022_16_SPROX_absprox.csv" />
+  </MapSaver>
+
+  <!-- G2O file Load & Save file name -->
+  <G2OFileIO
+    name = "PoseGraph"
+    LoadFileName = "../data/before_ku2022.g2o"
+    SaveFileName = "../data/after_ku2022_SPROX.g2o"
+    />
+
+  <!-- G2O file Save file name  Before optimization -->
+  <G2OFileIO
+    name = "BeforePGO"
+    SaveFileName = "../data/before_ku2022.g2o"
+    />
+
+  <!-- G2O file Save file name  After optimization -->
+  <G2OFileIO
+    name = "AfterPGO"
+    SaveFileName = "../data/after_ku2022_SPROX.g2o"
+    />
+
+  <!-- Pose-Graph Optimization by G2O -->
+  <MapOptimizer
+    name = "PoseGraphOptimization"
+    ItrNum = "0"
+    />
+
+  <!-- Convert map data to G2O data -->
+  <ToG2OConverter
+    name = "ToG2O"
+    >
+    <Node Tag = "VERTEX_PROX"/> <!-- Nodes type -->
+    <Odom Tag = "EDGE_SE2"
+      poseRef-InfoGain  = "100 100 1"
+      infoLimit         = "10^8 10^8 10^8"
+      /> <!-- Odometry edges type -->
+    <Loop Tag = "EDGE_SWITCH_PROX"
+      proxSim-InfoGain = "-1"
+      switchInfo       = "0.3"
+      /> <!-- Loop edges type -->
+  </ToG2OConverter>
+  <!--
+    <Loop Tag = "EDGE_M_Est_PROX"
+      proxSimGain = "-1"
+      robustKernel = "Huber"
+      robustKernelDelta = "1"
+      />
+    
+    Node
+      Tag = "VERTEX_PROX"
+            "VERTEX_SE2"
+    Odom
+      Tag = "EDGE_SE2"
+    Loop
+      Tag = "EDGE_SE2"
+            "EDGE_SWITCH_SE2"
+            "EDGE_PROX"
+            "EDGE_SWITCH_PROX"
+            "EDGE_M_Est_PROX"
+    M_Est
+      robustKernel = "Huber"
+                     "Cauchy"
+                     "GemanMcClure"
+  -->
+
+  <!-- Pre-processing to align the direction of time series data -->
+  <MapDirPrepro
+    name     = "MapDirPrepro"
+    clacSimEqMethod = "LDLT"
+    />
+
+  <Provisional name = "Provisional"/>
+  
+
+  <!-- Processing sequence -->
+  <SEQUENCE>
+    <task name="MapLoad"/>               <!-- Load map file -->
+    <task name="MapDirPrepro"/>          <!-- Pre-processing -->
+    <task name="ToG2O Forward"/>         <!-- Convert to G2O format -->
+    <task name="BeforePGO Save"/>        <!-- Save G2O file before optimization -->
+    <task name="PoseGraphOptimization"/> <!-- Pose-graph optimization by G2O -->
+    <task name="AfterPGO Save"/>         <!-- Save G2O file after optimization -->
+    <task name="ToG2O Reverse"/>         <!-- Apply optimization results on the map -->
+    <task name="MapSave"/>               <!-- Save map file -->
+    <!--
+    <task name="PoseGraph Load"/>
+    <task name="PoseGraph Save"/>
+    -->
+  </SEQUENCE>
+</ku2022>
