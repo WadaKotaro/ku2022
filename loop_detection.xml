@@ -95,8 +95,94 @@
       <proximity filename="map/ku2022/ku2022_16_prox.csv" map_id ="6"/>
       <loop      filename_save="map/ku2022/ku2022_1A_match.csv"/>
     </map_loader>
+    
+    
+    
 
-
+    <loop_detector
+      alias           = "ld00f"
+      name            = "loop_detector_00_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "200"
+      reverse         = "false"
+      map_pair0       = "0"
+      map_pair1       = "0"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld11f"
+      name            = "loop_detector_11_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "200"
+      reverse         = "false"
+      map_pair0       = "1"
+      map_pair1       = "1"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld22f"
+      name            = "loop_detector_22_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "500"
+      reverse         = "false"
+      map_pair0       = "2"
+      map_pair1       = "2"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld33f"
+      name            = "loop_detector_33_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "300"
+      reverse         = "false"
+      map_pair0       = "3"
+      map_pair1       = "3"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld44f"
+      name            = "loop_detector_44_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "300"
+      reverse         = "false"
+      map_pair0       = "4"
+      map_pair1       = "4"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
+    <loop_detector
+      alias           = "ld55f"
+      name            = "loop_detector_55_forward"
+      map             = "map"
+      proximity_matcher="loop_matcher_forward"
+      shift_cost      = "0.35"
+      min_gap         = "300"
+      reverse         = "false"
+      map_pair0       = "5"
+      map_pair1       = "5"
+      use_place_pos   = "false"
+      use_place_ori   = "false"
+      max_num_matches = "1"
+      />
 
     <loop_detector
       alias           = "ld01f"
@@ -252,94 +338,8 @@
       use_place_ori   = "false"
       max_num_matches = "2"
       />
-    
-    
-    
 
-    <loop_detector
-      alias           = "ld00f"
-      name            = "loop_detector_00_forward"
-      map             = "map"
-      proximity_matcher="loop_matcher_forward"
-      shift_cost      = "0.35"
-      min_gap         = "200"
-      reverse         = "false"
-      map_pair0       = "0"
-      map_pair1       = "0"
-      use_place_pos   = "false"
-      use_place_ori   = "false"
-      max_num_matches = "1"
-      />
-    <loop_detector
-      alias           = "ld11f"
-      name            = "loop_detector_11_forward"
-      map             = "map"
-      proximity_matcher="loop_matcher_forward"
-      shift_cost      = "0.35"
-      min_gap         = "200"
-      reverse         = "false"
-      map_pair0       = "1"
-      map_pair1       = "1"
-      use_place_pos   = "false"
-      use_place_ori   = "false"
-      max_num_matches = "1"
-      />
-    <loop_detector
-      alias           = "ld22f"
-      name            = "loop_detector_22_forward"
-      map             = "map"
-      proximity_matcher="loop_matcher_forward"
-      shift_cost      = "0.35"
-      min_gap         = "500"
-      reverse         = "false"
-      map_pair0       = "2"
-      map_pair1       = "2"
-      use_place_pos   = "false"
-      use_place_ori   = "false"
-      max_num_matches = "1"
-      />
-    <loop_detector
-      alias           = "ld33f"
-      name            = "loop_detector_33_forward"
-      map             = "map"
-      proximity_matcher="loop_matcher_forward"
-      shift_cost      = "0.35"
-      min_gap         = "300"
-      reverse         = "false"
-      map_pair0       = "3"
-      map_pair1       = "3"
-      use_place_pos   = "false"
-      use_place_ori   = "false"
-      max_num_matches = "1"
-      />
-    <loop_detector
-      alias           = "ld44f"
-      name            = "loop_detector_44_forward"
-      map             = "map"
-      proximity_matcher="loop_matcher_forward"
-      shift_cost      = "0.35"
-      min_gap         = "300"
-      reverse         = "false"
-      map_pair0       = "4"
-      map_pair1       = "4"
-      use_place_pos   = "false"
-      use_place_ori   = "false"
-      max_num_matches = "1"
-      />
-    <loop_detector
-      alias           = "ld55f"
-      name            = "loop_detector_55_forward"
-      map             = "map"
-      proximity_matcher="loop_matcher_forward"
-      shift_cost      = "0.35"
-      min_gap         = "300"
-      reverse         = "false"
-      map_pair0       = "5"
-      map_pair1       = "5"
-      use_place_pos   = "false"
-      use_place_ori   = "false"
-      max_num_matches = "1"
-      />
+
 
     <proximity_matcher
       name              = "loop_matcher_forward"
@@ -349,7 +349,6 @@
       num_iter          = "0"
       sharpness         = "0.5"
       />
-
     <proximity_matcher
       name              = "loop_matcher_reverse"
       location          = "location_loop"
